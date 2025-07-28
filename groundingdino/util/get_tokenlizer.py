@@ -22,7 +22,11 @@ def get_tokenlizer(text_encoder_type):
 
 def get_pretrained_language_model(text_encoder_type):
     if text_encoder_type == "bert-base-uncased" or (os.path.isdir(text_encoder_type) and os.path.exists(text_encoder_type)):
-        return BertModel.from_pretrained(text_encoder_type)
+        local_path = os.path.expanduser("~/.cache/huggingface/hub/models--bert-base-uncased/snapshots/86b5e0934494bd15c9632b12f734a8a67f723594")
+        if os.path.exists(local_path):
+            return BertModel.from_pretrained(local_path)
+        else:
+            return BertModel.from_pretrained(text_encoder_type)
     if text_encoder_type == "roberta-base":
         return RobertaModel.from_pretrained(text_encoder_type)
 
